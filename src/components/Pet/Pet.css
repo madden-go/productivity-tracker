@@ -1,0 +1,146 @@
+.pet-container {
+    position: fixed;
+    bottom: 30px;
+    right: 30px;
+    width: 60px;
+    height: 60px;
+    z-index: 50;
+    pointer-events: none;
+    /* Let clicks pass through if needed, or set auto for interaction */
+}
+
+.pet-body {
+    width: 60px;
+    height: 50px;
+    background-color: #FFDAC1;
+    /* Soft peach/orange cat color */
+    border-radius: 30px 30px 25px 25px;
+    position: relative;
+    animation: float 3s ease-in-out infinite;
+    box-shadow: inset -5px -5px 10px rgba(0, 0, 0, 0.05);
+}
+
+/* Ears */
+.pet-body::before,
+.pet-body::after {
+    content: '';
+    position: absolute;
+    top: -10px;
+    width: 0;
+    height: 0;
+    border-left: 10px solid transparent;
+    border-right: 10px solid transparent;
+    border-bottom: 20px solid #FFDAC1;
+}
+
+.pet-body::before {
+    left: 5px;
+    transform: rotate(-10deg);
+}
+
+.pet-body::after {
+    right: 5px;
+    transform: rotate(10deg);
+}
+
+.pet-face {
+    position: relative;
+    top: 15px;
+    width: 100%;
+    height: 100%;
+}
+
+.pet-eye {
+    position: absolute;
+    width: 6px;
+    height: 6px;
+    background-color: #4a4a4a;
+    border-radius: 50%;
+    top: 5px;
+    animation: blink 4s infinite;
+}
+
+.pet-eye.left {
+    left: 18px;
+}
+
+.pet-eye.right {
+    right: 18px;
+}
+
+.pet-mouth {
+    position: absolute;
+    width: 8px;
+    height: 4px;
+    border-bottom: 2px solid #4a4a4a;
+    border-radius: 0 0 4px 4px;
+    left: 50%;
+    top: 12px;
+    transform: translateX(-50%);
+}
+
+.pet-blush {
+    position: absolute;
+    width: 8px;
+    height: 4px;
+    background-color: #ffb7b2;
+    border-radius: 50%;
+    top: 14px;
+    opacity: 0.6;
+}
+
+.pet-blush.left {
+    left: 12px;
+}
+
+.pet-blush.right {
+    right: 12px;
+}
+
+.pet-shadow {
+    width: 40px;
+    height: 6px;
+    background-color: rgba(0, 0, 0, 0.1);
+    border-radius: 50%;
+    margin: 15px auto 0;
+    animation: shadowScale 3s ease-in-out infinite;
+}
+
+@keyframes float {
+
+    0%,
+    100% {
+        transform: translateY(0);
+    }
+
+    50% {
+        transform: translateY(-10px);
+    }
+}
+
+@keyframes shadowScale {
+
+    0%,
+    100% {
+        transform: scale(1);
+        opacity: 0.2;
+    }
+
+    50% {
+        transform: scale(0.8);
+        opacity: 0.1;
+    }
+}
+
+@keyframes blink {
+
+    0%,
+    90%,
+    100% {
+        transform: scaleY(1);
+    }
+
+    95% {
+        transform: scaleY(0.1);
+    }
+}

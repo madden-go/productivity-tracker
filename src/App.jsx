@@ -1,35 +1,54 @@
-import { useState } from 'react'
-import reactLogo from './assets/react.svg'
-import viteLogo from '/vite.svg'
-import './App.css'
+import { useState } from 'react';
+import Navbar from './components/Navbar/Navbar';
+import MainLayout from './components/Layout/MainLayout';
+import ReminderWidget from './components/Sidebar/ReminderWidget';
+import SubjectList from './components/Sidebar/SubjectList';
+import ActivityDropdown from './components/Sidebar/ActivityDropdown';
+import TodoList from './components/TodoList/TodoList';
+import HabitTracker from './components/Widgets/HabitTracker';
+import MoodTracker from './components/Widgets/MoodTracker';
+import JournalWidget from './components/Widgets/JournalWidget';
+import SpotifyWidget from './components/Widgets/SpotifyWidget';
+import CalendarDrawer from './components/Calendar/CalendarDrawer';
+import Pet from './components/Pet/Pet';
+// global styles are imported in main.jsx
 
 function App() {
-  const [count, setCount] = useState(0)
+  const [isCalendarOpen, setIsCalendarOpen] = useState(false);
+
+  const toggleCalendar = () => setIsCalendarOpen(!isCalendarOpen);
+
+  const LeftSidebar = () => (
+    <div className="flex-col gap-lg">
+      <ReminderWidget />
+      <SubjectList />
+      <ActivityDropdown />
+    </div>
+  );
+
+  const RightSidebar = () => (
+    <div className="flex-col gap-lg">
+      <HabitTracker />
+      <MoodTracker />
+      <JournalWidget />
+      <SpotifyWidget />
+    </div>
+  );
 
   return (
-    <>
-      <div>
-        <a href="https://vite.dev" target="_blank">
-          <img src={viteLogo} className="logo" alt="Vite logo" />
-        </a>
-        <a href="https://react.dev" target="_blank">
-          <img src={reactLogo} className="logo react" alt="React logo" />
-        </a>
-      </div>
-      <h1>Vite + React</h1>
-      <div className="card">
-        <button onClick={() => setCount((count) => count + 1)}>
-          count is {count}
-        </button>
-        <p>
-          Edit <code>src/App.jsx</code> and save to test HMR
-        </p>
-      </div>
-      <p className="read-the-docs">
-        Click on the Vite and React logos to learn more
-      </p>
-    </>
-  )
+    <div className="app-container">
+      <Navbar toggleCalendar={toggleCalendar} />
+
+      <MainLayout
+        leftColumn={<LeftSidebar />}
+        centerColumn={<div style={{ height: '100%' }}><TodoList /></div>}
+        rightColumn={<RightSidebar />}
+      />
+
+      <CalendarDrawer isOpen={isCalendarOpen} onClose={() => setIsCalendarOpen(false)} />
+      <Pet />
+    </div>
+  );
 }
 
-export default App
+export default App;
