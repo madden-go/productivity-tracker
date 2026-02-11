@@ -1,4 +1,5 @@
 import React from 'react';
+<<<<<<< HEAD
 import { useNavigate } from 'react-router-dom';
 import './CalendarDrawer.css';
 
@@ -10,6 +11,11 @@ const CalendarDrawer = ({ isOpen, onClose }) => {
         navigate('/calendar');
     };
 
+=======
+import './CalendarDrawer.css';
+
+const CalendarDrawer = ({ isOpen, onClose }) => {
+>>>>>>> 5177397df4a60232f23e16c446e5470f937eaad5
     // Simple mock calendar grid
     const days = Array.from({ length: 30 }, (_, i) => i + 1);
     const weekDays = ['Su', 'Mo', 'Tu', 'We', 'Th', 'Fr', 'Sa'];
@@ -23,6 +29,7 @@ const CalendarDrawer = ({ isOpen, onClose }) => {
                     <button className="close-btn" onClick={onClose}>&times;</button>
                 </div>
 
+<<<<<<< HEAD
                 <div style={{ padding: '0 20px 10px' }}>
                     <button
                         onClick={handleOpenFullCalendar}
@@ -44,6 +51,9 @@ const CalendarDrawer = ({ isOpen, onClose }) => {
 
                 <div className="calendar-grid">
 
+=======
+                <div className="calendar-grid">
+>>>>>>> 5177397df4a60232f23e16c446e5470f937eaad5
                     {weekDays.map(day => (
                         <div key={day} className="day-name">{day}</div>
                     ))}

@@ -29,7 +29,11 @@
 .stats-grid {
     display: grid;
     grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+<<<<<<< HEAD
     gap: 32px;
+=======
+    gap: var(--spacing-md);
+>>>>>>> 5177397df4a60232f23e16c446e5470f937eaad5
     margin-bottom: var(--spacing-lg);
 }
 

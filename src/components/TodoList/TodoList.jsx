@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import './TodoList.css';
 
+<<<<<<< HEAD
 const TodoList = ({ tasks, addTask, toggleTask, deleteTask }) => {
     // Local state for the input field only
     const [newTask, setNewTask] = useState("");
@@ -15,6 +16,33 @@ const TodoList = ({ tasks, addTask, toggleTask, deleteTask }) => {
 
     // toggleTask and deleteTask are now passed as props
 
+=======
+const TodoList = () => {
+    const [tasks, setTasks] = useState([
+        { id: 1, text: "Finish React project", completed: false },
+        { id: 2, text: "Read Chapter 4", completed: true },
+        { id: 3, text: "Email professor", completed: false },
+    ]);
+    const [newTask, setNewTask] = useState("");
+
+    const addTask = (e) => {
+        e.preventDefault();
+        if (!newTask.trim()) return;
+
+        setTasks([...tasks, { id: Date.now(), text: newTask, completed: false }]);
+        setNewTask("");
+    };
+
+    const toggleTask = (id) => {
+        setTasks(tasks.map(task =>
+            task.id === id ? { ...task, completed: !task.completed } : task
+        ));
+    };
+
+    const deleteTask = (id) => {
+        setTasks(tasks.filter(task => task.id !== id));
+    };
+>>>>>>> 5177397df4a60232f23e16c446e5470f937eaad5
 
     return (
         <div className="card todo-card">
@@ -23,7 +51,11 @@ const TodoList = ({ tasks, addTask, toggleTask, deleteTask }) => {
                 <span className="task-count">{tasks.filter(t => !t.completed).length} remaining</span>
             </div>
 
+<<<<<<< HEAD
             <form onSubmit={handleAddTask} className="add-task-form">
+=======
+            <form onSubmit={addTask} className="add-task-form">
+>>>>>>> 5177397df4a60232f23e16c446e5470f937eaad5
                 <input
                     type="text"
                     placeholder="Add a new task..."

@@ -28,6 +28,7 @@
 }
 
 .brand {
+<<<<<<< HEAD
     font-weight: 800;
     font-size: 1.5rem;
     color: var(--primary-color);
@@ -59,6 +60,12 @@
     color: var(--text-main);
     box-shadow: var(--shadow-soft);
     font-weight: 600;
+=======
+    font-weight: 700;
+    font-size: 1.2rem;
+    color: var(--text-main);
+    letter-spacing: -0.5px;
+>>>>>>> 5177397df4a60232f23e16c446e5470f937eaad5
 }
 
 .navbar-center {

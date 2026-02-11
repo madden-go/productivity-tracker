@@ -16,7 +16,10 @@ const CodingActivity = () => {
                     </div>
                     <div className="stat-info">
                         <span className="stat-value">14</span>
+<<<<<<< HEAD
                         <p>   </p>
+=======
+>>>>>>> 5177397df4a60232f23e16c446e5470f937eaad5
                         <span className="stat-label">GitHub Commits</span>
                     </div>
                 </div>
@@ -27,7 +30,10 @@ const CodingActivity = () => {
                     </div>
                     <div className="stat-info">
                         <span className="stat-value">3</span>
+<<<<<<< HEAD
                         <p>   </p>
+=======
+>>>>>>> 5177397df4a60232f23e16c446e5470f937eaad5
                         <span className="stat-label">LeetCode Problems</span>
                     </div>
                 </div>
@@ -38,7 +44,10 @@ const CodingActivity = () => {
                     </div>
                     <div className="stat-info">
                         <span className="stat-value">5.2h</span>
+<<<<<<< HEAD
                         <p>   </p>
+=======
+>>>>>>> 5177397df4a60232f23e16c446e5470f937eaad5
                         <span className="stat-label">Time Coded</span>
                     </div>
                 </div>

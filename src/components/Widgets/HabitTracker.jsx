@@ -1,8 +1,25 @@
+<<<<<<< HEAD
 import React from 'react';
 
 const HabitTracker = ({ habits, toggleHabit }) => {
     // habits and toggleHabit are now passed as props
 
+=======
+import React, { useState } from 'react';
+
+const HabitTracker = () => {
+    const [habits, setHabits] = useState([
+        { id: 1, name: "Drink Water", streak: 5, completed: false },
+        { id: 2, name: "Read 30 mins", streak: 12, completed: true },
+        { id: 3, name: "Meditate", streak: 3, completed: false },
+    ]);
+
+    const toggleHabit = (id) => {
+        setHabits(habits.map(h =>
+            h.id === id ? { ...h, completed: !h.completed, streak: h.completed ? h.streak - 1 : h.streak + 1 } : h
+        ));
+    };
+>>>>>>> 5177397df4a60232f23e16c446e5470f937eaad5
 
     return (
         <div className="card">
