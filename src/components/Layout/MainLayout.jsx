@@ -1,18 +1,10 @@
 import React from 'react';
 import './MainLayout.css';
 
-const MainLayout = ({ leftColumn, centerColumn, rightColumn }) => {
+const MainLayout = ({ children }) => {
     return (
-        <div className="main-layout">
-            <aside className="column left-column">
-                {leftColumn}
-            </aside>
-            <main className="column center-column">
-                {centerColumn}
-            </main>
-            <aside className="column right-column">
-                {rightColumn}
-            </aside>
+        <div className="bento-grid">
+            {children}
         </div>
     );
 };

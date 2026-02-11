@@ -6,7 +6,12 @@
     height: 60px;
     z-index: 50;
     pointer-events: none;
-    /* Let clicks pass through if needed, or set auto for interaction */
+    /* Default, overridden in JSX for interaction */
+    transition: transform 0.2s;
+}
+
+.pet-container:hover {
+    transform: scale(1.1);
 }
 
 .pet-body {
@@ -18,6 +23,41 @@
     position: relative;
     animation: float 3s ease-in-out infinite;
     box-shadow: inset -5px -5px 10px rgba(0, 0, 0, 0.05);
+    transition: background-color 0.3s;
+}
+
+/* Vibrating purr effect */
+.pet-body.vibrate {
+    animation: float 3s ease-in-out infinite, vibrate 0.3s linear infinite;
+    background-color: #ffd0b0;
+}
+
+/* Playful bounce */
+.pet-body.bounce-play {
+    animation: bounce 0.5s ease infinite;
+    background-color: #ffb7a0;
+}
+
+@keyframes vibrate {
+    0% {
+        transform: translate(0, 0);
+    }
+
+    25% {
+        transform: translate(0.5px, 0.5px);
+    }
+
+    50% {
+        transform: translate(0, 0);
+    }
+
+    75% {
+        transform: translate(-0.5px, -0.5px);
+    }
+
+    100% {
+        transform: translate(0, 0);
+    }
 }
 
 /* Ears */
@@ -31,6 +71,17 @@
     border-left: 10px solid transparent;
     border-right: 10px solid transparent;
     border-bottom: 20px solid #FFDAC1;
+    transition: border-bottom-color 0.3s;
+}
+
+.pet-body.vibrate::before,
+.pet-body.vibrate::after {
+    border-bottom-color: #ffd0b0;
+}
+
+.pet-body.bounce-play::before,
+.pet-body.bounce-play::after {
+    border-bottom-color: #ffb7a0;
 }
 
 .pet-body::before {
@@ -60,6 +111,16 @@
     animation: blink 4s infinite;
 }
 
+.pet-eye.happy {
+    height: 3px;
+    width: 8px;
+    border-radius: 0;
+    border-top: 2px solid #4a4a4a;
+    background-color: transparent;
+    animation: none;
+    top: 6px;
+}
+
 .pet-eye.left {
     left: 18px;
 }
@@ -77,6 +138,13 @@
     left: 50%;
     top: 12px;
     transform: translateX(-50%);
+    transition: all 0.2s;
+}
+
+.pet-mouth.smile {
+    border-bottom: 3px solid #4a4a4a;
+    height: 5px;
+    border-radius: 0 0 8px 8px;
 }
 
 .pet-blush {
@@ -106,6 +174,31 @@
     animation: shadowScale 3s ease-in-out infinite;
 }
 
+.pet-speech-bubble {
+    position: absolute;
+    top: -40px;
+    left: 50%;
+    transform: translateX(-50%);
+    background-color: white;
+    padding: 4px 10px;
+    border-radius: 12px;
+    font-size: 0.8rem;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+    white-space: nowrap;
+    animation: popIn 0.2s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+}
+
+.pet-speech-bubble::after {
+    content: '';
+    position: absolute;
+    bottom: -6px;
+    left: 50%;
+    transform: translateX(-50%);
+    border-width: 6px 6px 0;
+    border-style: solid;
+    border-color: white transparent transparent transparent;
+}
+
 @keyframes float {
 
     0%,
@@ -115,6 +208,18 @@
 
     50% {
         transform: translateY(-10px);
+    }
+}
+
+@keyframes bounce {
+
+    0%,
+    100% {
+        transform: translateY(0);
+    }
+
+    50% {
+        transform: translateY(-15px);
     }
 }
 
@@ -142,5 +247,17 @@
 
     95% {
         transform: scaleY(0.1);
+    }
+}
+
+@keyframes popIn {
+    from {
+        opacity: 0;
+        transform: translateX(-50%) scale(0.5);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateX(-50%) scale(1);
     }
 }
