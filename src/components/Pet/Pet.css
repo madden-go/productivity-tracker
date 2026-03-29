@@ -261,3 +261,16 @@
         transform: translateX(-50%) scale(1);
     }
 }
+
+/* Centered Pet for Auth Pages (at top horizontally centered & larger) */
+.pet-container.center-pet {
+    bottom: auto;
+    top: 22%;
+    left: 50%;
+    right: auto;
+    transform: translateX(-50%) scale(2.5);
+}
+
+.pet-container.center-pet:hover {
+    transform: translateX(-50%) scale(2.7);
+}

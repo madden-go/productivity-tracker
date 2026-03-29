@@ -1,14 +1,7 @@
-<<<<<<< HEAD
 import React from 'react';
 
 const MoodTracker = ({ selectedMood, setSelectedMood }) => {
 
-=======
-import React, { useState } from 'react';
-
-const MoodTracker = () => {
-    const [selectedMood, setSelectedMood] = useState(null);
->>>>>>> 5177397df4a60232f23e16c446e5470f937eaad5
     const moods = [
         { emoji: "😊", label: "Happy", color: "#B5EAD7" },
         { emoji: "😐", label: "Neutral", color: "#E6E6FA" },

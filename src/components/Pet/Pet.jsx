@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import './Pet.css';
 
-const Pet = () => {
+const Pet = ({ isAuthPage }) => {
     const [isInteracting, setIsInteracting] = useState(false);
     const [isHovering, setIsHovering] = useState(false);
     const [action, setAction] = useState('idle'); // idle, purr, play
@@ -27,7 +27,7 @@ const Pet = () => {
 
     return (
         <div
-            className="pet-container"
+            className={`pet-container ${isAuthPage ? 'center-pet' : ''}`}
             onClick={handleClick}
             onMouseEnter={handleMouseEnter}
             onMouseLeave={handleMouseLeave}

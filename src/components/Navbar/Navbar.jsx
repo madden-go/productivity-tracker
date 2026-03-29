@@ -1,12 +1,27 @@
-<<<<<<< HEAD
-import React from 'react';
+import React, { useState } from 'react';
 import { NavLink } from 'react-router-dom';
+import { useAuth } from '../../context/AuthContext';
 import './Navbar.css';
 
-const Navbar = () => {
+const Navbar = ({ toggleCalendar }) => {
+    const { user, logout } = useAuth();
+    const [showDropdown, setShowDropdown] = useState(false);
+
+    const handleLogout = () => {
+        setShowDropdown(false);
+        logout();
+    };
+
     return (
         <nav className="navbar">
             <div className="navbar-left">
+                <button className="menu-btn" onClick={toggleCalendar} aria-label="Toggle Calendar" style={{ background: 'none', border: 'none', cursor: 'pointer', marginRight: '10px', display: 'flex', alignItems: 'center', color: 'var(--text-main)' }}>
+                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <path d="M3 12H21" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
+                        <path d="M3 6H21" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
+                        <path d="M3 18H21" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
+                    </svg>
+                </button>
                 <div className="brand">Koa</div>
                 <div className="nav-links">
                     <NavLink to="/" className={({ isActive }) => isActive ? 'nav-link active' : 'nav-link'}>
@@ -16,23 +31,6 @@ const Navbar = () => {
                         Calendar
                     </NavLink>
                 </div>
-=======
-import React, { useState } from 'react';
-import './Navbar.css';
-
-const Navbar = ({ toggleCalendar }) => {
-    return (
-        <nav className="navbar">
-            <div className="navbar-left">
-                <button className="menu-btn" onClick={toggleCalendar} aria-label="Toggle Calendar">
-                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                        <path d="M3 12H21" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
-                        <path d="M3 6H21" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
-                        <path d="M3 18H21" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
-                    </svg>
-                </button>
-                <div className="brand">Koa</div>
->>>>>>> 5177397df4a60232f23e16c446e5470f937eaad5
             </div>
 
             <div className="navbar-center">
@@ -46,7 +44,24 @@ const Navbar = ({ toggleCalendar }) => {
             </div>
 
             <div className="navbar-right">
-                <div className="profile-placeholder"></div>
+                {user && <span className="user-name">{user.name}</span>}
+                <div className="profile-container">
+                    <div 
+                        className="profile-placeholder" 
+                        onClick={() => setShowDropdown(!showDropdown)}
+                        title="Profile Options"
+                    >
+                        {user?.name ? user.name.charAt(0).toUpperCase() : ''}
+                    </div>
+                    
+                    {showDropdown && (
+                        <div className="profile-dropdown">
+                            <button onClick={handleLogout} className="logout-btn">
+                                Logout
+                            </button>
+                        </div>
+                    )}
+                </div>
             </div>
         </nav>
     );

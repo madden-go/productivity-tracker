@@ -1,5 +1,5 @@
 import React from 'react';
-import { useNavigate } from 'react-router-dom';
+
 import './CalendarPage.css';
 
 const CalendarPage = ({ tasks, habits, mood }) => {

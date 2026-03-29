@@ -1,10 +1,8 @@
-import { useState } from 'react';
-<<<<<<< HEAD
-import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
-=======
->>>>>>> 5177397df4a60232f23e16c446e5470f937eaad5
+import { useState, useEffect } from 'react';
+import { BrowserRouter as Router, Routes, Route, useLocation } from 'react-router-dom';
 import Navbar from './components/Navbar/Navbar';
 import MainLayout from './components/Layout/MainLayout';
+
 // Components
 import ReminderWidget from './components/Sidebar/ReminderWidget';
 import SubjectList from './components/Sidebar/SubjectList';
@@ -15,165 +13,183 @@ import MoodTracker from './components/Widgets/MoodTracker';
 import JournalWidget from './components/Widgets/JournalWidget';
 import SpotifyWidget from './components/Widgets/SpotifyWidget';
 import TimeSplit from './components/Widgets/TimeSplit';
-<<<<<<< HEAD
-import CalendarWidget from './components/Widgets/CalendarWidget';
+import CalendarDrawer from './components/Calendar/CalendarDrawer';
 import Pet from './components/Pet/Pet';
+
 // Pages
 import CalendarPage from './pages/CalendarPage';
-// global styles are imported in main.jsx
+import Login from './pages/Login';
+import Register from './pages/Register';
+
+// Auth
+import { AuthProvider, useAuth } from './context/AuthContext';
+import ProtectedRoute from './components/ProtectedRoute';
 
 function AppContent() {
-  // -- State Lifted from TodoList --
-  const [tasks, setTasks] = useState([
-    { id: 1, text: "Finish React project", completed: false },
-    { id: 2, text: "Read Chapter 4", completed: true },
-    { id: 3, text: "Email professor", completed: false },
-  ]);
+  const location = useLocation();
+  const isAuthPage = location.pathname === '/login' || location.pathname === '/register';
+  const { user } = useAuth();
 
-  const addTask = (taskText) => {
-    setTasks([...tasks, { id: Date.now(), text: taskText, completed: false }]);
-  };
+  const [isCalendarOpen, setIsCalendarOpen] = useState(false);
+  const toggleCalendar = () => setIsCalendarOpen(!isCalendarOpen);
 
-  const toggleTask = (id) => {
-    setTasks(tasks.map(task =>
-      task.id === id ? { ...task, completed: !task.completed } : task
-    ));
-  };
-
-  const deleteTask = (id) => {
-    setTasks(tasks.filter(task => task.id !== id));
-  };
-
-  // -- State Lifted from HabitTracker --
-  const [habits, setHabits] = useState([
-    { id: 1, name: "Drink Water", streak: 5, completed: false },
-    { id: 2, name: "Read 30 mins", streak: 12, completed: true },
-    { id: 3, name: "Meditate", streak: 3, completed: false },
-  ]);
-
-  const toggleHabit = (id) => {
-    setHabits(habits.map(h =>
-      h.id === id ? { ...h, completed: !h.completed, streak: h.completed ? h.streak - 1 : h.streak + 1 } : h
-    ));
-  };
-
-  // -- State Lifted from MoodTracker --
+  const [tasks, setTasks] = useState([]);
+  const [habits, setHabits] = useState([]);
   const [selectedMood, setSelectedMood] = useState(null);
+
+  useEffect(() => {
+    if (user) {
+      // Fetch tasks
+      fetch(`/api/tasks?user_id=${user.id}`).then(r => r.json()).then(data => setTasks(data));
+      // Fetch habits
+      fetch(`/api/habits?user_id=${user.id}`).then(r => r.json()).then(data => setHabits(data));
+      
+      // Fetch today's mood
+      const today = new Date().toISOString().split('T')[0];
+      fetch(`/api/moods?user_id=${user.id}&date=${today}`).then(r => r.json()).then(data => {
+        if (data && data.mood !== undefined) {
+          setSelectedMood(parseInt(data.mood));
+        }
+      });
+    } else {
+      setTasks([]);
+      setHabits([]);
+      setSelectedMood(null);
+    }
+  }, [user]);
+
+  const addTask = async (taskText) => {
+    if (!user) return;
+    const res = await fetch('/api/tasks', {
+      method: 'POST', headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ user_id: user.id, text: taskText })
+    });
+    const newTask = await res.json();
+    setTasks([...tasks, newTask]);
+  };
+
+  const toggleTask = async (id) => {
+    const task = tasks.find(t => t.id === id);
+    if (!task) return;
+    const newStatus = !task.completed;
+    await fetch(`/api/tasks/${id}`, {
+      method: 'PUT', headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ completed: newStatus })
+    });
+    setTasks(tasks.map(t => t.id === id ? { ...t, completed: newStatus } : t));
+  };
+
+  const deleteTask = async (id) => {
+    await fetch(`/api/tasks/${id}`, { method: 'DELETE' });
+    setTasks(tasks.filter(t => t.id !== id));
+  };
+
+  const addHabit = async (habitName) => {
+    if (!user) return;
+    const res = await fetch('/api/habits', {
+      method: 'POST', headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ user_id: user.id, name: habitName })
+    });
+    const newHabit = await res.json();
+    setHabits([...habits, newHabit]);
+  };
+
+  const deleteHabit = async (id) => {
+    await fetch(`/api/habits/${id}`, { method: 'DELETE' });
+    setHabits(habits.filter(h => h.id !== id));
+  };
+
+  const toggleHabit = async (id) => {
+    const habit = habits.find(h => h.id === id);
+    if (!habit) return;
+    const newStatus = !habit.completed;
+    const newStreak = newStatus ? habit.streak + 1 : habit.streak - 1;
+    await fetch(`/api/habits/${id}`, {
+      method: 'PUT', headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ completed: newStatus, streak: newStreak })
+    });
+    setHabits(habits.map(h => h.id === id ? { ...h, completed: newStatus, streak: newStreak } : h));
+  };
+
+  const handleSetSelectedMood = async (moodIndex) => {
+    if (!user) return;
+    const today = new Date().toISOString().split('T')[0];
+    await fetch('/api/moods', {
+      method: 'POST', headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ user_id: user.id, date: today, mood: moodIndex.toString() })
+    });
+    setSelectedMood(moodIndex);
+  };
 
   return (
     <div className="app-container">
-      <Navbar />
+      {!isAuthPage && <Navbar toggleCalendar={toggleCalendar} />}
 
       <Routes>
+        <Route path="/login" element={<Login />} />
+        <Route path="/register" element={<Register />} />
+        
         <Route path="/" element={
-          <MainLayout>
-            {/* Column 1 - Left */}
-            <div className="flex-col gap-lg">
-              <CalendarWidget />
-              <ReminderWidget />
-              <SubjectList />
-              <MoodTracker selectedMood={selectedMood} setSelectedMood={setSelectedMood} />
-            </div>
+          <ProtectedRoute>
+            <MainLayout>
+              {/* Column 1 - Left */}
+              <div className="flex-col gap-lg">
+                <ReminderWidget />
+                <SubjectList />
+                <MoodTracker selectedMood={selectedMood} setSelectedMood={handleSetSelectedMood} />
+              </div>
 
-            {/* Column 2 - Center (Time Split + Tasks) */}
-            <div className="flex-col gap-lg">
-              <div style={{ height: '350px' }}>
-                <TimeSplit />
+              {/* Column 2 - Center (Time Split + Tasks) */}
+              <div className="flex-col gap-lg">
+                <div style={{ height: '350px' }}>
+                  <TimeSplit />
+                </div>
+                <div style={{ height: '400px' }}>
+                  <TodoList tasks={tasks} addTask={addTask} toggleTask={toggleTask} deleteTask={deleteTask} />
+                </div>
               </div>
-              <div style={{ height: '400px' }}>
-                <TodoList tasks={tasks} addTask={addTask} toggleTask={toggleTask} deleteTask={deleteTask} />
-              </div>
-            </div>
 
-            {/* Column 3 - Right (Coding Activity + Props) */}
-            <div className="flex-col gap-lg">
-              <div>
-                <CodingActivity />
+              {/* Column 3 - Right (Coding Activity + Props) */}
+              <div className="flex-col gap-lg">
+                <div>
+                  <CodingActivity />
+                </div>
+                <HabitTracker habits={habits} toggleHabit={toggleHabit} addHabit={addHabit} deleteHabit={deleteHabit} />
+                <div style={{ height: '150px' }}>
+                  <JournalWidget />
+                </div>
               </div>
-              <HabitTracker habits={habits} toggleHabit={toggleHabit} />
-              {/* Journal can go below or flexible */}
-              <div style={{ height: '150px' }}>
-                <JournalWidget />
-              </div>
-            </div>
-          </MainLayout>
+            </MainLayout>
+          </ProtectedRoute>
         } />
 
+        {/* Fallback support for older CalendarPage if needed */}
         <Route path="/calendar" element={
-          <CalendarPage
-            tasks={tasks}
-            habits={habits}
-            mood={selectedMood}
-          />
+          <ProtectedRoute>
+            <CalendarPage
+              tasks={tasks}
+              habits={habits}
+              mood={selectedMood}
+            />
+          </ProtectedRoute>
         } />
       </Routes>
 
-      <Pet />
-      <SpotifyWidget />
-=======
-import CalendarDrawer from './components/Calendar/CalendarDrawer';
-import Pet from './components/Pet/Pet';
-// global styles are imported in main.jsx
-
-function App() {
-  const [isCalendarOpen, setIsCalendarOpen] = useState(false);
-
-  const toggleCalendar = () => setIsCalendarOpen(!isCalendarOpen);
-
-  return (
-    <div className="app-container">
-      <Navbar toggleCalendar={toggleCalendar} />
-
-      <MainLayout>
-        {/* Column 1 */}
-        <div className="flex-col gap-lg">
-          <ReminderWidget />
-          <SubjectList />
-          <MoodTracker />
-        </div>
-
-        {/* Column 2 - Center (Tasks + Time Split) */}
-        <div className="flex-col gap-lg">
-          <div style={{ height: '400px' }}>
-            <TodoList />
-          </div>
-          <div style={{ height: '220px' }}>
-            <TimeSplit />
-          </div>
-        </div>
-
-        {/* Column 3 - Corner (Coding Activity + Props) */}
-        <div className="flex-col gap-lg">
-          <div>
-            <CodingActivity />
-          </div>
-          <HabitTracker />
-          <div className="flex gap-lg">
-            <SpotifyWidget />
-          </div>
-          {/* Journal can go below or flexible */}
-          <div style={{ height: '150px' }}>
-            <JournalWidget />
-          </div>
-        </div>
-      </MainLayout>
-
-      <CalendarDrawer isOpen={isCalendarOpen} onClose={() => setIsCalendarOpen(false)} />
-      <Pet />
->>>>>>> 5177397df4a60232f23e16c446e5470f937eaad5
+      {!isAuthPage && <CalendarDrawer isOpen={isCalendarOpen} onClose={() => setIsCalendarOpen(false)} />}
+      <Pet isAuthPage={isAuthPage} />
+      {!isAuthPage && <SpotifyWidget />}
     </div>
   );
 }
 
-<<<<<<< HEAD
 function App() {
   return (
-    <Router>
-      <AppContent />
-    </Router>
+    <AuthProvider>
+      <Router>
+        <AppContent />
+      </Router>
+    </AuthProvider>
   );
 }
 
-=======
->>>>>>> 5177397df4a60232f23e16c446e5470f937eaad5
 export default App;
