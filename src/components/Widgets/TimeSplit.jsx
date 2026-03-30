@@ -71,7 +71,7 @@ const TimeSplit = () => {
                             fontSize: '4rem',
                             fontWeight: '700',
                             width: '180px',
-                            background: 'var(--item-bg-hover)',
+                            background: 'var(--timer-container-bg)',
                             border: 'none',
                             borderRadius: '12px',
                             color: 'var(--timer-text)',
@@ -114,7 +114,7 @@ const TimeSplit = () => {
                 gap: '8px',
                 flexWrap: 'wrap',
                 justifyContent: 'center',
-                background: 'var(--item-bg-hover)',
+                background: 'var(--timer-container-bg)',
                 padding: '8px 16px',
                 borderRadius: '20px'
             }}>

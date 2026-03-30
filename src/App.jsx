@@ -39,6 +39,45 @@ function AppContent() {
   const [selectedMood, setSelectedMood] = useState(null);
 
   useEffect(() => {
+    // Catch Spotify PKCE Callback from Query String
+    const params = new URLSearchParams(window.location.search);
+    const code = params.get('code');
+
+    if (code) {
+      const clientId = localStorage.getItem('spotify_client_id');
+      const verifier = localStorage.getItem('spotify_code_verifier');
+      
+      if (clientId && verifier) {
+        const payload = {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+          body: new URLSearchParams({
+            client_id: clientId,
+            grant_type: 'authorization_code',
+            code: code,
+            redirect_uri: window.location.origin,
+            code_verifier: verifier,
+          }),
+        };
+
+        fetch('https://accounts.spotify.com/api/token', payload)
+          .then(res => res.json())
+          .then(data => {
+            if (data.access_token) {
+              localStorage.setItem('spotify_token', data.access_token);
+              if (data.refresh_token) {
+                  localStorage.setItem('spotify_refresh_token', data.refresh_token);
+              }
+              window.history.replaceState({}, document.title, '/');
+              window.dispatchEvent(new Event('storage'));
+            }
+          })
+          .catch(err => console.error('Spotify token exchange failed', err));
+      } else {
+        window.history.replaceState({}, document.title, '/');
+      }
+    }
+
     if (user) {
       // Fetch tasks
       fetch(`/api/tasks?user_id=${user.id}`).then(r => r.json()).then(data => setTasks(data));

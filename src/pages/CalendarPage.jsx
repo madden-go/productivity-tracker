@@ -1,19 +1,18 @@
-import React from 'react';
+import React, { useState } from 'react';
 
 import './CalendarPage.css';
 
 const CalendarPage = ({ tasks, habits, mood }) => {
-    // const navigate = useNavigate(); // Not used currently
+    const [currentDate, setCurrentDate] = useState(new Date());
 
-    // Mock Date Generation for "Current Month" (e.g., September 2026 based on previous mock)
-    // Actually, let's use the real date or a fixed mock that matches the user's "September 2026" from the drawer
-    // The user's prompt said "ensure that the dates are the current date".
-    // I'll grab the current real date.
-
-    const now = new Date();
-    const currentYear = now.getFullYear();
-    const currentMonth = now.getMonth(); // 0-indexed
-    const todayDate = now.getDate();
+    const currentYear = currentDate.getFullYear();
+    const currentMonth = currentDate.getMonth(); 
+    
+    // Check against real today date
+    const realNow = new Date();
+    const isActuallyToday = (day) => {
+        return day === realNow.getDate() && currentMonth === realNow.getMonth() && currentYear === realNow.getFullYear();
+    };
 
     const monthNames = ["January", "February", "March", "April", "May", "June",
         "July", "August", "September", "October", "November", "December"
@@ -23,6 +22,9 @@ const CalendarPage = ({ tasks, habits, mood }) => {
     const firstDayOfMonth = new Date(currentYear, currentMonth, 1).getDay(); // 0 (Sun) - 6 (Sat)
 
     const weekDays = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
+
+    const handlePrevMonth = () => setCurrentDate(new Date(currentYear, currentMonth - 1, 1));
+    const handleNextMonth = () => setCurrentDate(new Date(currentYear, currentMonth + 1, 1));
 
     // Generate calendar grid array
     const calendarDays = [];
@@ -57,9 +59,10 @@ const CalendarPage = ({ tasks, habits, mood }) => {
 
     return (
         <div className="calendar-page">
-            <div className="calendar-header">
-                <h1>{monthNames[currentMonth]} {currentYear}</h1>
-                <div style={{ width: '100px' }}></div> {/* Spacer for centering if needed */}
+            <div className="calendar-header" style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', gap: '20px' }}>
+                <button onClick={handlePrevMonth} style={{ background: 'none', border: 'none', cursor: 'pointer', fontSize: '1.5rem', color: 'var(--text-main)' }}>&lt;</button>
+                <h1 style={{ margin: 0, minWidth: '300px', textAlign: 'center' }}>{monthNames[currentMonth]} {currentYear}</h1>
+                <button onClick={handleNextMonth} style={{ background: 'none', border: 'none', cursor: 'pointer', fontSize: '1.5rem', color: 'var(--text-main)' }}>&gt;</button>
             </div>
 
             <div className="calendar-grid-full">
@@ -72,7 +75,7 @@ const CalendarPage = ({ tasks, habits, mood }) => {
                         return <div key={item.key} className="calendar-day-tile empty"></div>;
                     }
 
-                    const isToday = item.day === todayDate;
+                    const isToday = isActuallyToday(item.day);
 
                     return (
                         <div key={item.key} className={`calendar-day-tile ${isToday ? 'today' : ''}`}>

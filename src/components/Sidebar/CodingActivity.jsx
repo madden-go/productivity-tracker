@@ -18,20 +18,12 @@ const CodingActivity = () => {
             if (!githubUser) return;
             setLoadingGh(true);
             try {
-                const res = await fetch(`https://api.github.com/users/${githubUser}/events/public`);
+                // The open-source proxy hangs indefinitely. Native lifetime commits require an Auth Token.
+                // Reverting to the fast native REST API to prevent the UI from freezing.
+                const res = await fetch(`https://api.github.com/users/${githubUser}`);
                 if (res.ok) {
-                    const events = await res.json();
-                    const weekAgo = new Date();
-                    weekAgo.setDate(weekAgo.getDate() - 7);
-                    let commits = 0;
-                    events.forEach(ev => {
-                        if (ev.type === 'PushEvent' && new Date(ev.created_at) > weekAgo) {
-                            if (ev.payload && ev.payload.commits) {
-                                commits += ev.payload.commits.length;
-                            }
-                        }
-                    });
-                    setGithubCommits(commits);
+                    const data = await res.json();
+                    setGithubCommits(data.public_repos || 0);
                 }
             } catch (e) {}
             setLoadingGh(false);
@@ -77,7 +69,7 @@ const CodingActivity = () => {
         <div className="card coding-activity-card">
             <div className="activity-header">
                 <h3>Coding Activity</h3>
-                <span className="badge">Weekly Stats</span>
+                <span className="badge">All-Time Stats</span>
             </div>
 
             <div className="stats-grid">
@@ -100,10 +92,12 @@ const CodingActivity = () => {
                         ) : !githubUser ? (
                             <span className="stat-value" style={{fontSize: '0.85rem', fontWeight: 600, padding: '4px 0'}}>Sync to get info</span>
                         ) : (
-                            <span className="stat-value" title={`Connected to ${githubUser}`}>{loadingGh ? '...' : githubCommits}</span>
+                            <span className="stat-value" title={`Connected to ${githubUser}`}>
+                                {loadingGh ? '...' : githubCommits}
+                            </span>
                         )}
                         <p></p>
-                        <span className="stat-label">GitHub Commits</span>
+                        <span className="stat-label">Total Repos</span>
                     </div>
                 </div>
 
@@ -129,7 +123,7 @@ const CodingActivity = () => {
                             <span className="stat-value" title={`Connected to ${leetcodeUser}`}>{loadingLc ? '...' : leetcodeSolved}</span>
                         )}
                         <p></p>
-                        <span className="stat-label">LeetCode Solved</span>
+                        <span className="stat-label">Total Solved</span>
                     </div>
                 </div>
 

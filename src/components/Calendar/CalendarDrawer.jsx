@@ -1,11 +1,11 @@
-import React, { useState, useEffect, useContext } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { AuthContext } from '../../context/AuthContext';
+import { useAuth } from '../../context/AuthContext';
 import './CalendarDrawer.css';
 
 const CalendarDrawer = ({ isOpen, onClose }) => {
     const navigate = useNavigate();
-    const { user } = useContext(AuthContext);
+    const { user } = useAuth();
     const [reminders, setReminders] = useState([]);
 
     useEffect(() => {
@@ -22,8 +22,24 @@ const CalendarDrawer = ({ isOpen, onClose }) => {
         navigate('/calendar');
     };
 
-    // Simple mock calendar grid
-    const days = Array.from({ length: 30 }, (_, i) => i + 1);
+    const [currentDate, setCurrentDate] = useState(new Date());
+
+    const getDaysInMonth = (year, month) => new Date(year, month + 1, 0).getDate();
+    const getFirstDayOfMonth = (year, month) => new Date(year, month, 1).getDay();
+
+    const currentYear = currentDate.getFullYear();
+    const currentMonth = currentDate.getMonth();
+
+    const daysInMonth = getDaysInMonth(currentYear, currentMonth);
+    const firstDay = getFirstDayOfMonth(currentYear, currentMonth);
+
+    const days = Array.from({ length: daysInMonth }, (_, i) => i + 1);
+    const emptyDays = Array.from({ length: firstDay }, (_, i) => i);
+
+    const handlePrevMonth = () => setCurrentDate(new Date(currentYear, currentMonth - 1, 1));
+    const handleNextMonth = () => setCurrentDate(new Date(currentYear, currentMonth + 1, 1));
+
+    const monthNames = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
     const weekDays = ['Su', 'Mo', 'Tu', 'We', 'Th', 'Fr', 'Sa'];
 
     return (
@@ -31,7 +47,11 @@ const CalendarDrawer = ({ isOpen, onClose }) => {
             <div className={`overlay ${isOpen ? 'open' : ''}`} onClick={onClose}></div>
             <div className={`calendar-drawer ${isOpen ? 'open' : ''}`}>
                 <div className="drawer-header">
-                    <h2>September 2026</h2>
+                    <div style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
+                        <button onClick={handlePrevMonth} style={{ background: 'none', border: 'none', cursor: 'pointer', fontSize: '1.2rem', color: 'var(--text-main)' }}>&lt;</button>
+                        <h2 style={{ margin: 0 }}>{monthNames[currentMonth]} {currentYear}</h2>
+                        <button onClick={handleNextMonth} style={{ background: 'none', border: 'none', cursor: 'pointer', fontSize: '1.2rem', color: 'var(--text-main)' }}>&gt;</button>
+                    </div>
                     <button className="close-btn" onClick={onClose}>&times;</button>
                 </div>
 
@@ -55,17 +75,20 @@ const CalendarDrawer = ({ isOpen, onClose }) => {
                 </div>
 
                 <div className="calendar-grid">
-
                     {weekDays.map(day => (
                         <div key={day} className="day-name">{day}</div>
                     ))}
-                    <div className="empty-day"></div>
-                    <div className="empty-day"></div>
-                    {days.map(day => (
-                        <div key={day} className={`day-cell ${day === 11 ? 'today' : ''}`}>
-                            {day}
-                        </div>
+                    {emptyDays.map(empty => (
+                        <div key={`empty-${empty}`} className="empty-day"></div>
                     ))}
+                    {days.map(day => {
+                        const isToday = new Date().getDate() === day && new Date().getMonth() === currentMonth && new Date().getFullYear() === currentYear;
+                        return (
+                            <div key={day} className={`day-cell ${isToday ? 'today' : ''}`}>
+                                {day}
+                            </div>
+                        );
+                    })}
                 </div>
 
                 <div className="events-section">
@@ -81,7 +104,7 @@ const CalendarDrawer = ({ isOpen, onClose }) => {
                                 <div key={rem.id} className="event-item">
                                     <div className="event-date">{day}</div>
                                     <div className="event-info">
-                                        <h4>{rem.text}</h4>
+                                        <h4>{rem.title}</h4>
                                         <p style={{ color: rem.urgent ? 'var(--danger-color)' : 'var(--text-light)' }}>
                                             {rem.urgent ? '🚨 ' : ''}{timeStr}
                                         </p>

@@ -26,6 +26,7 @@
   --timer-bg: linear-gradient(135deg, #FFDAC1 0%, #FFB7B2 100%);
   --timer-text: #ffffff;
   --timer-btn-active-text: #FFB7B2;
+  --timer-container-bg: rgba(255, 255, 255, 0.2);
 }
 
 [data-theme='dark'] {
@@ -51,6 +52,7 @@
   --timer-bg: var(--card-bg);
   --timer-text: #E0E0E0;
   --timer-btn-active-text: #121212;
+  --timer-container-bg: var(--item-bg-hover);
 }
 
 :root {
@@ -221,9 +223,9 @@ textarea:focus {
 .form-group input {
   padding: 10px;
   border-radius: 8px;
-  border: 1px solid #eee;
-  background-color: #fcfcfc;
-  color: var(--text-main);
+  border: 1px solid var(--border-subtle);
+  background-color: var(--input-bg);
+  color: var(--text-color);
   outline: none;
   transition: border-color 0.2s;
 }
@@ -234,7 +236,7 @@ textarea:focus {
 
 .auth-button {
   background-color: var(--primary-color);
-  color: white;
+  color: var(--btn-text);
   padding: 10px;
   border: none;
   border-radius: 8px;
