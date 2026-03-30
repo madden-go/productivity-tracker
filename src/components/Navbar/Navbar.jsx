@@ -1,15 +1,80 @@
-import React, { useState } from 'react';
-import { NavLink } from 'react-router-dom';
+import React, { useState, useEffect, useRef } from 'react';
+import { NavLink, useNavigate } from 'react-router-dom';
 import { useAuth } from '../../context/AuthContext';
 import './Navbar.css';
 
 const Navbar = ({ toggleCalendar }) => {
     const { user, logout } = useAuth();
     const [showDropdown, setShowDropdown] = useState(false);
+    
+    // Search State
+    const [searchQuery, setSearchQuery] = useState('');
+    const [searchResults, setSearchResults] = useState([]);
+    const [isSearching, setIsSearching] = useState(false);
+    const searchRef = useRef(null);
+    const navigate = useNavigate();
+
+    // Theme State
+    const [theme, setTheme] = useState(localStorage.getItem('theme') || 'light');
+
+    useEffect(() => {
+        if (theme === 'dark') {
+            document.documentElement.setAttribute('data-theme', 'dark');
+        } else {
+            document.documentElement.removeAttribute('data-theme');
+        }
+        localStorage.setItem('theme', theme);
+    }, [theme]);
+
+    const toggleTheme = () => {
+        setTheme(prev => prev === 'light' ? 'dark' : 'light');
+    };
 
     const handleLogout = () => {
         setShowDropdown(false);
         logout();
+    };
+
+    // Debounced Search Effect
+    useEffect(() => {
+        if (!searchQuery.trim() || !user) {
+            setSearchResults([]);
+            return;
+        }
+
+        const delayFn = setTimeout(() => {
+            setIsSearching(true);
+            fetch(`/api/journals/search?user_id=${user.id}&q=${encodeURIComponent(searchQuery)}`)
+                .then(r => r.json())
+                .then(data => {
+                    setSearchResults(data);
+                    setIsSearching(false);
+                })
+                .catch(err => {
+                    console.error(err);
+                    setIsSearching(false);
+                });
+        }, 400); // 400ms debounce
+
+        return () => clearTimeout(delayFn);
+    }, [searchQuery, user]);
+
+    // Close search dropdown when clicking outside
+    useEffect(() => {
+        const handleClickOutside = (event) => {
+            if (searchRef.current && !searchRef.current.contains(event.target)) {
+                setSearchResults([]);
+                setSearchQuery('');
+            }
+        };
+        document.addEventListener('mousedown', handleClickOutside);
+        return () => document.removeEventListener('mousedown', handleClickOutside);
+    }, []);
+
+    const handleResultClick = () => {
+        setSearchResults([]);
+        setSearchQuery('');
+        navigate('/history');
     };
 
     return (
@@ -30,20 +95,54 @@ const Navbar = ({ toggleCalendar }) => {
                     <NavLink to="/calendar" className={({ isActive }) => isActive ? 'nav-link active' : 'nav-link'}>
                         Calendar
                     </NavLink>
+                    <NavLink to="/history" className={({ isActive }) => isActive ? 'nav-link active' : 'nav-link'}>
+                        History
+                    </NavLink>
                 </div>
             </div>
 
             <div className="navbar-center">
-                <div className="search-bar">
-                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-                        <circle cx="11" cy="11" r="8"></circle>
-                        <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
-                    </svg>
-                    <input type="text" placeholder="Search..." />
+                <div className="search-bar-container" ref={searchRef} style={{ position: 'relative', width: '100%', maxWidth: '400px' }}>
+                    <div className="search-bar" style={{ width: '100%' }}>
+                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                            <circle cx="11" cy="11" r="8"></circle>
+                            <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
+                        </svg>
+                        <input 
+                            type="text" 
+                            placeholder="Search journals..." 
+                            value={searchQuery}
+                            onChange={(e) => setSearchQuery(e.target.value)}
+                        />
+                    </div>
+                    {/* Search Results Dropdown */}
+                    {searchQuery.trim().length > 0 && (
+                        <div className="search-dropdown">
+                            {isSearching ? (
+                                <div className="search-item" style={{ textAlign: 'center', color: 'var(--text-light)' }}>Searching...</div>
+                            ) : searchResults.length > 0 ? (
+                                searchResults.map(res => (
+                                    <div key={res.id} className="search-item" onClick={handleResultClick}>
+                                        <div className="search-item-date">{res.date}</div>
+                                        <div className="search-item-text">{res.entry.substring(0, 60)}...</div>
+                                    </div>
+                                ))
+                            ) : (
+                                <div className="search-item" style={{ textAlign: 'center', color: 'var(--text-light)' }}>No matching journals found.</div>
+                            )}
+                        </div>
+                    )}
                 </div>
             </div>
 
-            <div className="navbar-right">
+            <div className="navbar-right" style={{ display: 'flex', alignItems: 'center', gap: '15px' }}>
+                <button 
+                    onClick={toggleTheme} 
+                    style={{ background: 'none', border: 'none', cursor: 'pointer', fontSize: '1.2rem', color: 'var(--text-main)', display: 'flex', padding: '4px' }}
+                    title={`Switch to ${theme === 'light' ? 'Dark' : 'Light'} Mode`}
+                >
+                    {theme === 'light' ? '🌙' : '☀️'}
+                </button>
                 {user && <span className="user-name">{user.name}</span>}
                 <div className="profile-container">
                     <div 

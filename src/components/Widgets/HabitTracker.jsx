@@ -19,8 +19,8 @@ const HabitTracker = ({ habits, toggleHabit, addHabit, deleteHabit }) => {
                     <div key={habit.id}
                         style={{
                             display: 'flex', justifyContent: 'space-between', alignItems: 'center',
-                            padding: '10px', backgroundColor: habit.completed ? 'rgba(181, 234, 215, 0.3)' : '#f9f9f9',
-                            borderRadius: '12px', transition: 'all 0.2s'
+                            padding: '10px', backgroundColor: habit.completed ? 'var(--item-bg-hover)' : 'var(--item-bg)',
+                            borderRadius: '12px', transition: 'all 0.2s', borderLeft: habit.completed ? '4px solid var(--success-color)' : '4px solid transparent'
                         }}
                     >
                         <span 
@@ -43,9 +43,9 @@ const HabitTracker = ({ habits, toggleHabit, addHabit, deleteHabit }) => {
                         value={newHabit}
                         onChange={(e) => setNewHabit(e.target.value)}
                         placeholder="New Habit..."
-                        style={{ flex: 1, padding: '6px', borderRadius: '6px', border: '1px solid #ddd' }}
+                        style={{ flex: 1, padding: '6px', borderRadius: '6px', border: '1px solid var(--input-border)', backgroundColor: 'var(--input-bg)', color: 'var(--text-main)' }}
                     />
-                    <button type="submit" style={{ padding: '6px 12px', borderRadius: '6px', background: 'var(--primary-color)', color: '#fff', border: 'none', cursor: 'pointer' }}>+</button>
+                    <button type="submit" style={{ padding: '6px 12px', borderRadius: '6px', background: 'var(--primary-color)', color: 'var(--btn-text)', border: 'none', cursor: 'pointer' }}>+</button>
                 </form>
             </div>
         </div>

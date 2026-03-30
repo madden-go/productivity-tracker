@@ -50,8 +50,8 @@ const TimeSplit = () => {
             justifyContent: 'center',
             alignItems: 'center',
             height: '100%',
-            background: 'linear-gradient(135deg, #FFDAC1 0%, #FFB7B2 100%)',
-            color: 'white',
+            background: 'var(--timer-bg)',
+            color: 'var(--timer-text)',
             position: 'relative',
             overflow: 'hidden'
         }}>
@@ -71,10 +71,10 @@ const TimeSplit = () => {
                             fontSize: '4rem',
                             fontWeight: '700',
                             width: '180px',
-                            background: 'rgba(255,255,255,0.2)',
+                            background: 'var(--item-bg-hover)',
                             border: 'none',
                             borderRadius: '12px',
-                            color: 'white',
+                            color: 'var(--timer-text)',
                             textAlign: 'center',
                             padding: '10px'
                         }}
@@ -98,9 +98,9 @@ const TimeSplit = () => {
                 <button onClick={toggleTimer} style={{
                     padding: '12px 32px',
                     borderRadius: '50px',
-                    border: '3px solid white',
-                    background: isActive ? 'white' : 'transparent',
-                    color: isActive ? '#FFB7B2' : 'white',
+                    border: '3px solid var(--timer-text)',
+                    background: isActive ? 'var(--timer-text)' : 'transparent',
+                    color: isActive ? 'var(--timer-btn-active-text)' : 'var(--timer-text)',
                     fontWeight: '700',
                     fontSize: '1.2rem',
                     boxShadow: '0 4px 10px rgba(0,0,0,0.1)'
@@ -114,17 +114,17 @@ const TimeSplit = () => {
                 gap: '8px',
                 flexWrap: 'wrap',
                 justifyContent: 'center',
-                background: 'rgba(0,0,0,0.05)',
+                background: 'var(--item-bg-hover)',
                 padding: '8px 16px',
                 borderRadius: '20px'
             }}>
-                <button onClick={() => resetTimer('focus')} style={{ opacity: mode === 'focus' ? 1 : 0.7, background: 'none', color: 'white', fontWeight: 600 }}>Focus</button>
-                <div style={{ width: 1, background: 'rgba(255,255,255,0.4)' }}></div>
-                <button onClick={() => resetTimer('short')} style={{ opacity: mode === 'short' ? 1 : 0.7, background: 'none', color: 'white', fontWeight: 600 }}>Short</button>
-                <div style={{ width: 1, background: 'rgba(255,255,255,0.4)' }}></div>
-                <button onClick={() => resetTimer('long')} style={{ opacity: mode === 'long' ? 1 : 0.7, background: 'none', color: 'white', fontWeight: 600 }}>Long</button>
-                <div style={{ width: 1, background: 'rgba(255,255,255,0.4)' }}></div>
-                <button onClick={() => resetTimer('custom')} style={{ opacity: mode === 'custom' ? 1 : 0.7, background: 'none', color: 'white', fontWeight: 600 }}>Custom</button>
+                <button onClick={() => resetTimer('focus')} style={{ opacity: mode === 'focus' ? 1 : 0.7, background: 'none', color: 'var(--timer-text)', fontWeight: 600 }}>Focus</button>
+                <div style={{ width: 1, background: 'var(--text-light)' }}></div>
+                <button onClick={() => resetTimer('short')} style={{ opacity: mode === 'short' ? 1 : 0.7, background: 'none', color: 'var(--timer-text)', fontWeight: 600 }}>Short</button>
+                <div style={{ width: 1, background: 'var(--text-light)' }}></div>
+                <button onClick={() => resetTimer('long')} style={{ opacity: mode === 'long' ? 1 : 0.7, background: 'none', color: 'var(--timer-text)', fontWeight: 600 }}>Long</button>
+                <div style={{ width: 1, background: 'var(--text-light)' }}></div>
+                <button onClick={() => resetTimer('custom')} style={{ opacity: mode === 'custom' ? 1 : 0.7, background: 'none', color: 'var(--timer-text)', fontWeight: 600 }}>Custom</button>
             </div>
         </div>
     );

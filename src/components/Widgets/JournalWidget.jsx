@@ -19,7 +19,7 @@ const JournalWidget = () => {
         }
     }, [user]);
 
-    const handleBlur = async () => {
+    const handleSave = async () => {
         if (!user || !entry.trim()) return;
         const today = new Date().toISOString().split('T')[0];
         try {
@@ -34,24 +34,33 @@ const JournalWidget = () => {
     };
 
     return (
-        <div className="card" style={{ flex: 1 }}>
+        <div className="card" style={{ flex: 1, display: 'flex', flexDirection: 'column' }}>
             <h3 style={{ marginBottom: '12px', fontSize: '1.1rem', color: 'var(--text-main)' }}>Journal</h3>
             <textarea
                 value={entry}
                 onChange={(e) => setEntry(e.target.value)}
-                onBlur={handleBlur}
+                onBlur={handleSave}
                 placeholder="Write your thoughts..."
                 style={{
                     width: '100%',
-                    height: '100px',
+                    flex: 1,
+                    minHeight: '100px',
                     resize: 'none',
-                    border: '1px solid #eee',
+                    border: '1px solid var(--border-light)',
                     borderRadius: '12px',
                     padding: '10px',
                     fontSize: '0.9rem',
-                    backgroundColor: '#fafafa'
+                    backgroundColor: 'var(--input-bg)',
+                    color: 'var(--text-main)',
+                    marginBottom: '10px'
                 }}
             ></textarea>
+            <button 
+                className="journal-btn"
+                onClick={handleSave}
+            >
+                Save Entry
+            </button>
         </div>
     );
 };

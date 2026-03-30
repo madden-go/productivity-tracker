@@ -22,7 +22,7 @@
 .task-count {
     font-size: 0.8rem;
     color: var(--text-light);
-    background: #f5f5f5;
+    background: var(--item-bg);
     padding: 2px 8px;
     border-radius: 12px;
 }
@@ -38,13 +38,14 @@
     padding: 8px 12px;
     /* Compact padding */
     font-size: 0.9rem;
-    background: #f9f9f9;
-    border: 1px solid transparent;
+    background: var(--input-bg);
+    color: var(--text-main);
+    border: 1px solid var(--input-border);
     transition: all 0.2s;
 }
 
 .add-task-form input:focus {
-    background: white;
+    background: var(--card-bg);
     border-color: var(--primary-color);
     box-shadow: 0 0 0 3px rgba(188, 184, 138, 0.1);
 }
@@ -80,15 +81,15 @@
     align-items: center;
     padding: 8px;
     /* Compact padding */
-    background: white;
+    background: var(--item-bg);
     border-radius: 8px;
-    border: 1px solid #f0f0f0;
+    border: 1px solid var(--border-subtle);
     transition: all 0.2s;
 }
 
 .task-item:hover {
-    background: #fdfdfd;
-    border-color: #eee;
+    background: var(--item-bg-hover);
+    border-color: var(--border-light);
 }
 
 /* Checkbox Styles */
@@ -101,7 +102,7 @@
     width: 18px;
     /* Smaller checkbox */
     height: 18px;
-    border: 2px solid #ddd;
+    border: 2px solid var(--input-border);
     border-radius: 5px;
     display: flex;
     align-items: center;
@@ -130,7 +131,7 @@
 
 .delete-btn {
     background: none;
-    color: #ddd;
+    color: var(--input-border);
     opacity: 0;
     padding: 4px;
     border-radius: 6px;
@@ -144,7 +145,7 @@
 }
 
 .delete-btn:hover {
-    background-color: #fff0f0;
+    background-color: transparent;
     color: var(--danger-color);
 }
 

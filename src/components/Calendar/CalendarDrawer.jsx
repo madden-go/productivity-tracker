@@ -1,9 +1,21 @@
-import React from 'react';
+import React, { useState, useEffect, useContext } from 'react';
 import { useNavigate } from 'react-router-dom';
+import { AuthContext } from '../../context/AuthContext';
 import './CalendarDrawer.css';
 
 const CalendarDrawer = ({ isOpen, onClose }) => {
     const navigate = useNavigate();
+    const { user } = useContext(AuthContext);
+    const [reminders, setReminders] = useState([]);
+
+    useEffect(() => {
+        if (isOpen && user?.id) {
+            fetch(`/api/reminders?user_id=${user.id}`)
+                .then(res => { if(res.ok) return res.json(); throw new Error('Failed to fetch'); })
+                .then(data => setReminders(Array.isArray(data) ? data : []))
+                .catch(err => console.error(err));
+        }
+    }, [isOpen, user]);
 
     const handleOpenFullCalendar = () => {
         onClose();
@@ -57,21 +69,27 @@ const CalendarDrawer = ({ isOpen, onClose }) => {
                 </div>
 
                 <div className="events-section">
-                    <h3>Upcoming Events</h3>
-                    <div className="event-item">
-                        <div className="event-date">12</div>
-                        <div className="event-info">
-                            <h4>Math Assignment</h4>
-                            <p>11:59 PM</p>
-                        </div>
-                    </div>
-                    <div className="event-item">
-                        <div className="event-date">15</div>
-                        <div className="event-info">
-                            <h4>Study Group</h4>
-                            <p>2:00 PM - Library</p>
-                        </div>
-                    </div>
+                    <h3>Upcoming Reminders</h3>
+                    {reminders.length === 0 ? (
+                        <p style={{ color: 'var(--text-light)', fontSize: '0.9rem' }}>No upcoming reminders.</p>
+                    ) : (
+                        reminders.slice(0, 5).map(rem => {
+                            const dateObj = rem.due_date ? new Date(rem.due_date) : new Date();
+                            const day = dateObj.getDate();
+                            const timeStr = dateObj.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
+                            return (
+                                <div key={rem.id} className="event-item">
+                                    <div className="event-date">{day}</div>
+                                    <div className="event-info">
+                                        <h4>{rem.text}</h4>
+                                        <p style={{ color: rem.urgent ? 'var(--danger-color)' : 'var(--text-light)' }}>
+                                            {rem.urgent ? '🚨 ' : ''}{timeStr}
+                                        </p>
+                                    </div>
+                                </div>
+                            );
+                        })
+                    )}
                 </div>
             </div>
         </>

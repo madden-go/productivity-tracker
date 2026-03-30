@@ -17,6 +17,43 @@
   --success-color: #B5EAD7;
   /* Soft Mint */
 
+  --item-bg: #f9f9f9;
+  --item-bg-hover: #f0f0f0;
+  --input-bg: #fafafa;
+  --input-border: #ddd;
+  --border-light: #eee;
+  --btn-text: #ffffff;
+  --timer-bg: linear-gradient(135deg, #FFDAC1 0%, #FFB7B2 100%);
+  --timer-text: #ffffff;
+  --timer-btn-active-text: #FFB7B2;
+}
+
+[data-theme='dark'] {
+  --bg-color: #121212;
+  --card-bg: #1e1e1e;
+  --primary-color: #BCB88A;
+  --accent-color: #5c5c7d;
+  --secondary-accent: #4a6c7c;
+  --text-main: #E0E0E0;
+  --text-light: #A0A0A0;
+  --danger-color: #cc6d66;
+  --success-color: #6a9c8a;
+  
+  --shadow-soft: 0 4px 20px rgba(0, 0, 0, 0.3);
+  --shadow-hover: 0 8px 25px rgba(0, 0, 0, 0.4);
+
+  --item-bg: #2a2a2a;
+  --item-bg-hover: #333333;
+  --input-bg: #222222;
+  --input-border: #444444;
+  --border-light: #333333;
+  --btn-text: #E0E0E0;
+  --timer-bg: var(--card-bg);
+  --timer-text: #E0E0E0;
+  --timer-btn-active-text: #121212;
+}
+
+:root {
   /* Generic Variables */
   --border-radius: 16px;
   --shadow-soft: 0 4px 20px rgba(0, 0, 0, 0.03);
@@ -25,6 +62,7 @@
   --spacing-sm: 8px;
   --spacing-md: 16px;
   --spacing-lg: 24px;
+  --spacing-xl: 32px;
   /* Layout Consistency */
   --page-padding: 32px;
   --content-max-width: 1400px;
@@ -239,4 +277,29 @@ textarea:focus {
   20%, 80% { transform: translate3d(2px, 0, 0); }
   30%, 50%, 70% { transform: translate3d(-4px, 0, 0); }
   40%, 60% { transform: translate3d(4px, 0, 0); }
+}
+
+/* Journal Save Button */
+.journal-btn {
+  padding: 8px 16px;
+  background-color: var(--primary-color);
+  color: white;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  align-self: flex-end;
+  font-size: 0.9rem;
+  font-weight: 600;
+  transition: transform 0.2s cubic-bezier(0.175, 0.885, 0.32, 1.275), box-shadow 0.2s ease, background-color 0.2s ease;
+}
+
+.journal-btn:hover {
+  transform: translateY(-2px) scale(1.02);
+  box-shadow: 0 6px 16px rgba(188, 184, 138, 0.3); /* using primarily color with opacity */
+  background-color: #ABA77B; /* slightly darker primary */
+}
+
+.journal-btn:active {
+  transform: translateY(1px) scale(0.98);
+  box-shadow: 0 2px 4px rgba(188, 184, 138, 0.2);
 }

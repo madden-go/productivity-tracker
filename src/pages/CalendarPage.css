@@ -38,7 +38,7 @@
 }
 
 .back-btn:hover {
-    background-color: rgba(0, 0, 0, 0.05);
+    background-color: var(--item-bg-hover);
     color: var(--text-main);
 }
 
@@ -57,26 +57,26 @@
 }
 
 .calendar-day-tile {
-    background-color: #fff;
+    background-color: var(--card-bg);
     border-radius: 16px;
     padding: 1rem;
     min-height: 120px;
     display: flex;
     flex-direction: column;
     justify-content: space-between;
-    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.02);
+    box-shadow: var(--shadow-soft);
     transition: transform 0.2s, box-shadow 0.2s;
     border: 1px solid transparent;
 }
 
 .calendar-day-tile:hover {
     transform: translateY(-2px);
-    box-shadow: 0 8px 12px rgba(0, 0, 0, 0.05);
+    box-shadow: var(--shadow-hover);
 }
 
 .calendar-day-tile.today {
     border-color: var(--primary-color);
-    background-color: #fbfdff;
+    background-color: var(--item-bg);
 }
 
 .calendar-day-tile.empty {
@@ -108,7 +108,7 @@
 }
 
 .task-preview {
-    background-color: #f0f4f8;
+    background-color: var(--item-bg-hover);
     padding: 4px 8px;
     border-radius: 4px;
     white-space: nowrap;
@@ -121,7 +121,7 @@
 .habit-score {
     width: 100%;
     height: 6px;
-    background-color: #eee;
+    background-color: var(--border-light);
     border-radius: 3px;
     overflow: hidden;
 }

@@ -20,6 +20,7 @@ import Pet from './components/Pet/Pet';
 import CalendarPage from './pages/CalendarPage';
 import Login from './pages/Login';
 import Register from './pages/Register';
+import HistoryPage from './pages/HistoryPage';
 
 // Auth
 import { AuthProvider, useAuth } from './context/AuthContext';
@@ -64,6 +65,7 @@ function AppContent() {
       method: 'POST', headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ user_id: user.id, text: taskText })
     });
+    if (!res.ok) { console.error("Failed to add task"); return; }
     const newTask = await res.json();
     setTasks([...tasks, newTask]);
   };
@@ -90,6 +92,7 @@ function AppContent() {
       method: 'POST', headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ user_id: user.id, name: habitName })
     });
+    if (!res.ok) { console.error("Failed to add habit"); return; }
     const newHabit = await res.json();
     setHabits([...habits, newHabit]);
   };
@@ -171,6 +174,12 @@ function AppContent() {
               habits={habits}
               mood={selectedMood}
             />
+          </ProtectedRoute>
+        } />
+
+        <Route path="/history" element={
+          <ProtectedRoute>
+            <HistoryPage />
           </ProtectedRoute>
         } />
       </Routes>

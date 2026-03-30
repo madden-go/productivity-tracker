@@ -1,5 +1,5 @@
 .coding-activity-card {
-    background: white;
+    background: var(--card-bg);
     height: 100%;
     display: flex;
     flex-direction: column;
@@ -28,8 +28,8 @@
 
 .stats-grid {
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
-    gap: 32px;
+    grid-template-columns: repeat(auto-fit, minmax(100px, 1fr));
+    gap: var(--spacing-md);
     margin-bottom: var(--spacing-lg);
 }
 
@@ -57,8 +57,8 @@
 }
 
 .stat-box.accent {
-    background-color: rgba(230, 230, 250, 0.5);
-    color: #9B9BC2;
+    background-color: rgba(138, 43, 226, 0.1);
+    color: #8A2BE2; /* Blue violet / darker purple */
 }
 
 .stat-icon svg {

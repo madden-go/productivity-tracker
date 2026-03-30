@@ -10,7 +10,12 @@ export function AuthProvider({ children }) {
     // Check local storage for an existing user session on mount
     const storedUser = localStorage.getItem('user');
     if (storedUser) {
-      setUser(JSON.parse(storedUser));
+      const parsed = JSON.parse(storedUser);
+      if (parsed && parsed.id) {
+        setUser(parsed);
+      } else {
+        localStorage.removeItem('user');
+      }
     }
     setLoading(false);
   }, []);

@@ -27,6 +27,7 @@ const SubjectList = () => {
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify({ user_id: user.id, name: newSubject, color: randomColor })
             });
+            if (!res.ok) throw new Error("Failed to add course");
             const added = await res.json();
             setSubjects([...subjects, added]);
             setNewSubject("");
@@ -45,7 +46,7 @@ const SubjectList = () => {
                 {subjects.map(subject => (
                     <div key={subject.id} style={{
                         display: 'flex', alignItems: 'center', justifyContent: 'space-between',
-                        padding: '10px', borderRadius: '12px', border: '1px solid #f0f0f0',
+                        padding: '10px', borderRadius: '12px', border: '1px solid var(--border-subtle)', backgroundColor: 'var(--item-bg)'
                     }}>
                         <div>
                             <div style={{ fontWeight: '600', fontSize: '0.95rem' }}>{subject.name}</div>
@@ -63,9 +64,9 @@ const SubjectList = () => {
                         value={newSubject}
                         onChange={(e) => setNewSubject(e.target.value)}
                         placeholder="New Course..."
-                        style={{ flex: 1, padding: '6px', borderRadius: '6px', border: '1px solid #ddd' }}
+                        style={{ flex: 1, padding: '6px', borderRadius: '6px', border: '1px solid var(--input-border)', backgroundColor: 'var(--input-bg)', color: 'var(--text-main)' }}
                     />
-                    <button type="submit" style={{ padding: '6px 12px', borderRadius: '6px', background: 'var(--primary-color)', color: '#fff', border: 'none', cursor: 'pointer' }}>+</button>
+                    <button type="submit" style={{ padding: '6px 12px', borderRadius: '6px', background: 'var(--primary-color)', color: 'var(--btn-text)', border: 'none', cursor: 'pointer' }}>+</button>
                 </form>
             </div>
         </div>
