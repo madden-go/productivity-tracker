@@ -93,7 +93,7 @@ const SpotifyWidget = () => {
         const hashed = await sha256(codeVerifier);
         const codeChallenge = base64encode(hashed);
 
-        const redirectUri = 'http://localhost:5173/callback';
+        const redirectUri = window.location.origin;
         const scopes = 'user-read-currently-playing user-read-playback-state user-modify-playback-state';
         
         const url = `https://accounts.spotify.com/authorize?client_id=${clientId.trim()}&response_type=code&redirect_uri=${encodeURIComponent(redirectUri)}&scope=${encodeURIComponent(scopes)}&code_challenge_method=S256&code_challenge=${codeChallenge}`;
