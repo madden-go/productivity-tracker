@@ -9,7 +9,7 @@ const ReminderWidget = () => {
 
     useEffect(() => {
         if (user) {
-            fetch(`/api/reminders?user_id=${user.id}`)
+            fetch(`${import.meta.env.VITE_API_URL || ''}/api/reminders?user_id=${user.id}`)
                 .then(r => r.json())
                 .then(data => setReminders(data))
                 .catch(err => console.error(err));
@@ -21,7 +21,7 @@ const ReminderWidget = () => {
         if (!user || !newReminder.trim()) return;
         
         try {
-            const res = await fetch('/api/reminders', {
+            const res = await fetch((import.meta.env.VITE_API_URL || '') + '/api/reminders', {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify({ user_id: user.id, title: newReminder, due_date: newDueDate })
@@ -35,7 +35,7 @@ const ReminderWidget = () => {
     };
 
     const handleDelete = async (id) => {
-        await fetch(`/api/reminders/${id}`, { method: 'DELETE' });
+        await fetch(`${import.meta.env.VITE_API_URL || ''}/api/reminders/${id}`, { method: 'DELETE' });
         setReminders(reminders.filter(r => r.id !== id));
     };
 

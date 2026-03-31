@@ -41,7 +41,7 @@ const Navbar = ({ toggleCalendar }) => {
 
         const delayFn = setTimeout(() => {
             setIsSearching(true);
-            fetch(`/api/journals/search?user_id=${user.id}&q=${encodeURIComponent(searchQuery)}`)
+            fetch(`${import.meta.env.VITE_API_URL || ''}/api/journals/search?user_id=${user.id}&q=${encodeURIComponent(searchQuery)}`)
                 .then(r => r.json())
                 .then(data => {
                     setSearchResults(data);

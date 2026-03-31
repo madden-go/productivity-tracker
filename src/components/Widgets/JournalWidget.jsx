@@ -8,7 +8,7 @@ const JournalWidget = () => {
     useEffect(() => {
         if (user) {
             const today = new Date().toISOString().split('T')[0];
-            fetch(`/api/journals?user_id=${user.id}&date=${today}`)
+            fetch(`${import.meta.env.VITE_API_URL || ''}/api/journals?user_id=${user.id}&date=${today}`)
                 .then(r => r.json())
                 .then(data => {
                     if (data && data.entry) {
@@ -23,7 +23,7 @@ const JournalWidget = () => {
         if (!user || !entry.trim()) return;
         const today = new Date().toISOString().split('T')[0];
         try {
-            await fetch('/api/journals', {
+            await fetch((import.meta.env.VITE_API_URL || '') + '/api/journals', {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify({ user_id: user.id, entry, date: today })

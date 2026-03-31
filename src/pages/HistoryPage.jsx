@@ -12,13 +12,13 @@ const HistoryPage = () => {
     useEffect(() => {
         if (user) {
             // Fetch all journals
-            fetch(`/api/journals?user_id=${user.id}`)
+            fetch(`${import.meta.env.VITE_API_URL || ''}/api/journals?user_id=${user.id}`)
                 .then(r => r.json())
                 .then(data => setJournals(data))
                 .catch(err => console.error(err));
             
             // Fetch all tasks
-            fetch(`/api/tasks?user_id=${user.id}`)
+            fetch(`${import.meta.env.VITE_API_URL || ''}/api/tasks?user_id=${user.id}`)
                 .then(r => r.json())
                 .then(data => setTasks(data))
                 .catch(err => console.error(err));

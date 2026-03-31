@@ -10,7 +10,7 @@ const CalendarDrawer = ({ isOpen, onClose }) => {
 
     useEffect(() => {
         if (isOpen && user?.id) {
-            fetch(`/api/reminders?user_id=${user.id}`)
+            fetch(`${import.meta.env.VITE_API_URL || ''}/api/reminders?user_id=${user.id}`)
                 .then(res => { if(res.ok) return res.json(); throw new Error('Failed to fetch'); })
                 .then(data => setReminders(Array.isArray(data) ? data : []))
                 .catch(err => console.error(err));

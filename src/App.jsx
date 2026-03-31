@@ -80,13 +80,13 @@ function AppContent() {
 
     if (user) {
       // Fetch tasks
-      fetch(`/api/tasks?user_id=${user.id}`).then(r => r.json()).then(data => setTasks(data));
+      fetch(`${import.meta.env.VITE_API_URL || ''}/api/tasks?user_id=${user.id}`).then(r => r.json()).then(data => setTasks(data));
       // Fetch habits
-      fetch(`/api/habits?user_id=${user.id}`).then(r => r.json()).then(data => setHabits(data));
+      fetch(`${import.meta.env.VITE_API_URL || ''}/api/habits?user_id=${user.id}`).then(r => r.json()).then(data => setHabits(data));
       
       // Fetch today's mood
       const today = new Date().toISOString().split('T')[0];
-      fetch(`/api/moods?user_id=${user.id}&date=${today}`).then(r => r.json()).then(data => {
+      fetch(`${import.meta.env.VITE_API_URL || ''}/api/moods?user_id=${user.id}&date=${today}`).then(r => r.json()).then(data => {
         if (data && data.mood !== undefined) {
           setSelectedMood(parseInt(data.mood));
         }
@@ -100,7 +100,7 @@ function AppContent() {
 
   const addTask = async (taskText) => {
     if (!user) return;
-    const res = await fetch('/api/tasks', {
+    const res = await fetch((import.meta.env.VITE_API_URL || '') + '/api/tasks', {
       method: 'POST', headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ user_id: user.id, text: taskText })
     });
@@ -113,7 +113,7 @@ function AppContent() {
     const task = tasks.find(t => t.id === id);
     if (!task) return;
     const newStatus = !task.completed;
-    await fetch(`/api/tasks/${id}`, {
+    await fetch(`${import.meta.env.VITE_API_URL || ''}/api/tasks/${id}`, {
       method: 'PUT', headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ completed: newStatus })
     });
@@ -121,13 +121,13 @@ function AppContent() {
   };
 
   const deleteTask = async (id) => {
-    await fetch(`/api/tasks/${id}`, { method: 'DELETE' });
+    await fetch(`${import.meta.env.VITE_API_URL || ''}/api/tasks/${id}`, { method: 'DELETE' });
     setTasks(tasks.filter(t => t.id !== id));
   };
 
   const addHabit = async (habitName) => {
     if (!user) return;
-    const res = await fetch('/api/habits', {
+    const res = await fetch((import.meta.env.VITE_API_URL || '') + '/api/habits', {
       method: 'POST', headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ user_id: user.id, name: habitName })
     });
@@ -137,7 +137,7 @@ function AppContent() {
   };
 
   const deleteHabit = async (id) => {
-    await fetch(`/api/habits/${id}`, { method: 'DELETE' });
+    await fetch(`${import.meta.env.VITE_API_URL || ''}/api/habits/${id}`, { method: 'DELETE' });
     setHabits(habits.filter(h => h.id !== id));
   };
 
@@ -146,7 +146,7 @@ function AppContent() {
     if (!habit) return;
     const newStatus = !habit.completed;
     const newStreak = newStatus ? habit.streak + 1 : habit.streak - 1;
-    await fetch(`/api/habits/${id}`, {
+    await fetch(`${import.meta.env.VITE_API_URL || ''}/api/habits/${id}`, {
       method: 'PUT', headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ completed: newStatus, streak: newStreak })
     });
@@ -156,7 +156,7 @@ function AppContent() {
   const handleSetSelectedMood = async (moodIndex) => {
     if (!user) return;
     const today = new Date().toISOString().split('T')[0];
-    await fetch('/api/moods', {
+    await fetch((import.meta.env.VITE_API_URL || '') + '/api/moods', {
       method: 'POST', headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ user_id: user.id, date: today, mood: moodIndex.toString() })
     });

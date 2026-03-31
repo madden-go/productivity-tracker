@@ -8,7 +8,7 @@ const SubjectList = () => {
 
     useEffect(() => {
         if (user) {
-            fetch(`/api/subjects?user_id=${user.id}`)
+            fetch(`${import.meta.env.VITE_API_URL || ''}/api/subjects?user_id=${user.id}`)
                 .then(r => r.json())
                 .then(data => setSubjects(data))
                 .catch(err => console.error(err));
@@ -22,7 +22,7 @@ const SubjectList = () => {
         const randomColor = colors[Math.floor(Math.random() * colors.length)];
         
         try {
-            const res = await fetch('/api/subjects', {
+            const res = await fetch((import.meta.env.VITE_API_URL || '') + '/api/subjects', {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify({ user_id: user.id, name: newSubject, color: randomColor })
@@ -35,7 +35,7 @@ const SubjectList = () => {
     };
 
     const handleDelete = async (id) => {
-        await fetch(`/api/subjects/${id}`, { method: 'DELETE' });
+        await fetch(`${import.meta.env.VITE_API_URL || ''}/api/subjects/${id}`, { method: 'DELETE' });
         setSubjects(subjects.filter(s => s.id !== id));
     };
 

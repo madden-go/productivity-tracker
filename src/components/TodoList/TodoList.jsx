@@ -2,7 +2,6 @@ import React, { useState } from 'react';
 import './TodoList.css';
 
 const TodoList = ({ tasks, addTask, toggleTask, deleteTask }) => {
-    // Local state for the input field only
     const [newTask, setNewTask] = useState("");
 
     const handleAddTask = (e) => {
@@ -13,7 +12,6 @@ const TodoList = ({ tasks, addTask, toggleTask, deleteTask }) => {
         setNewTask("");
     };
 
-    // toggleTask and deleteTask are now passed as props
 
     return (
         <div className="card todo-card">
