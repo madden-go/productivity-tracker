@@ -7,14 +7,12 @@ const Navbar = ({ toggleCalendar }) => {
     const { user, logout } = useAuth();
     const [showDropdown, setShowDropdown] = useState(false);
     
-    // Search State
     const [searchQuery, setSearchQuery] = useState('');
     const [searchResults, setSearchResults] = useState([]);
     const [isSearching, setIsSearching] = useState(false);
     const searchRef = useRef(null);
     const navigate = useNavigate();
 
-    // Theme State
     const [theme, setTheme] = useState(localStorage.getItem('theme') || 'light');
 
     useEffect(() => {
@@ -35,7 +33,6 @@ const Navbar = ({ toggleCalendar }) => {
         logout();
     };
 
-    // Debounced Search Effect
     useEffect(() => {
         if (!searchQuery.trim() || !user) {
             setSearchResults([]);
@@ -54,12 +51,11 @@ const Navbar = ({ toggleCalendar }) => {
                     console.error(err);
                     setIsSearching(false);
                 });
-        }, 400); // 400ms debounce
+        }, 400); 
 
         return () => clearTimeout(delayFn);
     }, [searchQuery, user]);
 
-    // Close search dropdown when clicking outside
     useEffect(() => {
         const handleClickOutside = (event) => {
             if (searchRef.current && !searchRef.current.contains(event.target)) {

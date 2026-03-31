@@ -6,7 +6,6 @@
     height: 60px;
     z-index: 50;
     pointer-events: none;
-    /* Default, overridden in JSX for interaction */
     transition: transform 0.2s;
 }
 
@@ -18,7 +17,6 @@
     width: 60px;
     height: 50px;
     background-color: #FFDAC1;
-    /* Soft peach/orange cat color */
     border-radius: 30px 30px 25px 25px;
     position: relative;
     animation: float 3s ease-in-out infinite;
@@ -26,13 +24,11 @@
     transition: background-color 0.3s;
 }
 
-/* Vibrating purr effect */
 .pet-body.vibrate {
     animation: float 3s ease-in-out infinite, vibrate 0.3s linear infinite;
     background-color: #ffd0b0;
 }
 
-/* Playful bounce */
 .pet-body.bounce-play {
     animation: bounce 0.5s ease infinite;
     background-color: #ffb7a0;

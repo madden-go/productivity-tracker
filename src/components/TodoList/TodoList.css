@@ -9,12 +9,10 @@
     justify-content: space-between;
     align-items: center;
     margin-bottom: var(--spacing-md);
-    /* Reduced from lg */
 }
 
 .header h2 {
     font-size: 1.1rem;
-    /* Reduced from 1.5rem */
     font-weight: 700;
     color: var(--text-main);
 }
@@ -36,7 +34,6 @@
 .add-task-form input {
     flex: 1;
     padding: 8px 12px;
-    /* Compact padding */
     font-size: 0.9rem;
     background: var(--input-bg);
     color: var(--text-main);
@@ -54,7 +51,6 @@
     background-color: var(--primary-color);
     color: white;
     width: 36px;
-    /* Smaller button */
     border-radius: 8px;
     display: flex;
     align-items: center;
@@ -72,7 +68,6 @@
     display: flex;
     flex-direction: column;
     gap: 6px;
-    /* Tighter gap */
     padding-right: 4px;
 }
 
@@ -80,7 +75,6 @@
     display: flex;
     align-items: center;
     padding: 8px;
-    /* Compact padding */
     background: var(--item-bg);
     border-radius: 8px;
     border: 1px solid var(--border-subtle);
@@ -92,7 +86,6 @@
     border-color: var(--border-light);
 }
 
-/* Checkbox Styles */
 .checkbox-wrapper {
     cursor: pointer;
     padding: 2px;
@@ -100,7 +93,6 @@
 
 .custom-checkbox {
     width: 18px;
-    /* Smaller checkbox */
     height: 18px;
     border: 2px solid var(--input-border);
     border-radius: 5px;

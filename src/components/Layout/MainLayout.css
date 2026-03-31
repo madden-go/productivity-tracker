@@ -9,8 +9,6 @@
     min-height: calc(100vh - 80px);
 }
 
-/* Cell utility helper classes if we want to use them directly, 
-   but we'll probably style wrapper divs in App.jsx or use specific classes */
 .col-span-2 {
     grid-column: span 2;
 }
@@ -19,7 +17,6 @@
     grid-row: span 2;
 }
 
-/* Responsive adjustments */
 @media (max-width: 1024px) {
     .bento-grid {
         grid-template-columns: repeat(2, 1fr);
