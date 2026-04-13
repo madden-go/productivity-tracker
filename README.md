@@ -1,6 +1,10 @@
+
+https://github.com/user-attachments/assets/5cd3243e-d70d-45d7-a815-53b9a1f100a0
 # Koa 🌿
 
 > An all-in-one, low-stimulation productivity ecosystem for students.
+
+https://github.com/user-attachments/assets/369fc9f5-e46a-4017-9193-42b0ea6eb87c
 
 Most productivity tools are too loud. Most journals are too empty. Koa sits in between — a calm, focused space to track your habits, academics, and coding streaks without the noise.
 
@@ -88,7 +92,7 @@ productivity-tracker/
 ## Contributors
 
 - **[madden-go](https://github.com/madden-go)**
-- **Akshita**
+- **[Akshita-ma](https://github.com/Akshita-ma)**
 
 Built as a course project for Web Programming.
 
