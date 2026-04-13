@@ -1,5 +1,3 @@
-
-https://github.com/user-attachments/assets/5cd3243e-d70d-45d7-a815-53b9a1f100a0
 # Koa 🌿
 
 > An all-in-one, low-stimulation productivity ecosystem for students.
